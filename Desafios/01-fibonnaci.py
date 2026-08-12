@@ -1,19 +1,15 @@
-n = int(input("Digite um número: "))
+n = int(input("Digite um número para calcular a sequencia de fibonacci: "))
 
 a = 0
 b = 1
 soma = 0
 
-for i in range(n - 1):
+for i in range(n):
+    print(a)
+    soma = soma + a
 
-    soma = soma + b
-    if i == n - 2:
-        print(str(a))
-        print(str(b))
-    else:
-        print(str(a))
-    temp = b
-    b = a + b
-    a = temp
+    proximo = a + b
+    a = b
+    b = proximo
 
-print("soma = " + str(soma))
+print("Soma:", soma)
