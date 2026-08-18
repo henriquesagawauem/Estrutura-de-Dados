@@ -9,23 +9,25 @@ def gerarVetor(tam: int) -> list[int]:
     return vetor
 
 def encontraMenor(vetorMenor: list[int], vetorMaior: list[int]) -> int:
-    if len(vetorMenor) == len(vetorMaior):
-        return 0
-    
-    contador = 0
+    if len(vetorMenor) > len(vetorMaior) or len(vetorMenor) == 0 or len(vetorMaior) == 0:
+        return -1
 
     for i in range(len(vetorMaior)):
-        if len(vetorMenor) < i:
-            return -1
-        if vetorMaior[i] == vetorMenor[i]:
-            eh_igual = True
-            contador += 1
+        contador = 0
+        j = i
+        continuar = True
 
-            if contador == len(vetorMenor):
-                return i - len(vetorMenor)
-        else:
-            contador = 0
+        while j < len(vetorMaior) and continuar and contador < len(vetorMenor):
+            if vetorMaior[j] == vetorMenor[contador]:
+                contador += 1
+                j += 1
+            else:
+                continuar = False
+
+        if contador == len(vetorMenor):
+            return i
     return -1
+
 
 if __name__ == "__main__":
     eh_loop: bool = True
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         while digitando:
             dig = int(input("Digite um valor para a lista menor\nDigite -1 para parar\nDígito: "))
 
-            if (dig != -1):
+            if (dig >= 0):
                 vetorMenor.append(dig)
             else:
                 digitando = False
@@ -50,4 +52,10 @@ if __name__ == "__main__":
         if (resultado == -1):
             print("Lista não encontrada")
         else:
-            print(f"Lista encontrada em: {resultado}")
+            print(f"Lista {vetorMenor} encontrada no índice: {resultado}")
+
+        resposta = input("Deseja continuar?\n1 - Sim\n2 - Não\nDigite: ")
+
+        if (resposta == "2"):
+            eh_loop = False
+            print("Encerrando o programa :(")
