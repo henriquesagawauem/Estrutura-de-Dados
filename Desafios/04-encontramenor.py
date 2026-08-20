@@ -4,7 +4,7 @@ def gerarVetor(tamanho: int) -> list[int]:
     vetor: list[int] = []
 
     for i in range(tamanho):
-        vetor.append(random.randint(0, 99))
+        vetor.append(random.randint(0, 9))
 
     return vetor
 
@@ -91,10 +91,8 @@ if __name__ == "__main__":
     m = 5
 
     vetorMaior = gerarVetor(n)
-    vetorMenor = gerarVetor(m)
 
     print("Vetor maior:", vetorMaior)
-    print("Vetor menor:", vetorMenor)
 
     continuar = True
 
@@ -117,7 +115,7 @@ if __name__ == "__main__":
         elif opcao == 2:
 
             print("Vetor maior: ", vetorMaior)
-            print("Vetor menor: ", vetorMenor)
+            vetorMenor = lerVetor(m, "Digite o vetor menor: ")
 
             posicoes = encontraTodas(vetorMenor, vetorMaior, n, m)
             
@@ -130,11 +128,15 @@ if __name__ == "__main__":
                 print("O vetor menor não foi encontrado.")
 
         elif opcao == 3:
+            print("Vetor maior: ", vetorMaior)
+            vetorMenor = lerVetor(m, "Digite o vetor menor:")
             vetorMaior = removerTodas(vetorMenor, vetorMaior)
             n = len(vetorMaior)
             print("Vetor maior após a remoção: ", vetorMaior)
         
         elif opcao == 4:
+            print("Vetor maior: ", vetorMaior)
+            vetorMenor = lerVetor(m, "Digite o vetor menor:")
             vetorNovo = lerVetor(m, "Digite os elementos do novo vetor: ")
             vetorMaior = substituirTodas(vetorMenor, vetorMaior, vetorNovo)
             print("Vetor alterado com sucesso: ", vetorMaior)
