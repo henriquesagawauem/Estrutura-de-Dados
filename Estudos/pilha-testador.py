@@ -1,10 +1,11 @@
+from pilhaComFila import PilhaComFila
 from pilhaDinamica import PilhaDinamica
 from pilhaEstatica import *
 
 
 def main():
     while True:
-        escolha = int(input("1 - Pilha Estática\n2 - Pilha Dinâmica\nEscolha: "))
+        escolha = int(input("1 - Pilha Estática\n2 - Pilha Dinâmica\n3 - Pilha com Fila\nEscolha: "))
 
         if escolha == 1:
             tamanho = int(input("Tamanho da pilha: "))
@@ -12,6 +13,9 @@ def main():
             break
         elif escolha == 2:
             pilha = PilhaDinamica()
+            break
+        elif escolha == 3:
+            pilha = PilhaComFila()
             break
         else:
             print("Opção inválida!")

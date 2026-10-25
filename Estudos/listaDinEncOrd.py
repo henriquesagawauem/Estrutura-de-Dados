@@ -98,11 +98,38 @@ class ListaDinEncOrd:
             aux = self._inicio
 
             for i in range(self._numItens - 1):
-                print(aux.item.nome, end=", ")
+                print(f"Nome: {aux.item.nome}, CPF: {aux.item.cpf}", end=" | ")
                 aux = aux._prox
 
-            print(aux.item.nome, end="\n")
+            print(f"Nome: {aux.item.nome}, CPF: {aux.item.cpf}", end="\n")
 
+        return
+
+    def reordenaCpf(self) -> None:
+        if self.vazia():
+            return
+
+        inicioOrdenado: TipoNo | None = None
+        atual = self._inicio
+
+        for i in range(self._numItens):
+            proximo = atual._prox
+
+            if inicioOrdenado == None or atual.item.cpf <= inicioOrdenado.item.cpf:
+                atual._prox = inicioOrdenado
+                inicioOrdenado = atual
+            else:
+                anterior = inicioOrdenado
+
+                while anterior._prox != None and anterior._prox.item.cpf <= atual.item.cpf:
+                    anterior = anterior._prox
+
+                atual._prox = anterior._prox
+                anterior._prox = atual
+
+            atual = proximo
+
+        self._inicio = inicioOrdenado
         return
 
     def esvazia(self) -> None:

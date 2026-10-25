@@ -1,10 +1,11 @@
 from filaDinamica import FilaDinamica
 from filaEstaticaCircular import FilaEstaticaCircular, TipoItem
+from filaComPilha import FilaComPilha
 
 
 def main():
     while True:
-        escolha = int(input("1 - Fila Estática Circular\n2 - Fila Dinâmica\nEscolha: "))
+        escolha = int(input("1 - Fila Estática Circular\n2 - Fila Dinâmica\n3 - Fila com Pilha\nEscolha: "))
 
         if escolha == 1:
             tamanho = int(input("Tamanho da fila: "))
@@ -12,6 +13,9 @@ def main():
             break
         elif escolha == 2:
             fila = FilaDinamica()
+            break
+        elif escolha == 3:
+            fila = FilaComPilha()
             break
         else:
             print("Opção inválida!")
@@ -36,6 +40,7 @@ def main():
             item = fila.primeiro()
             if fila.desenfileira():
                 print(f"{item.valor} removido!")
+                print("Removido!")
             else:
                 print("fila vázia!")
         elif opcao == 3:

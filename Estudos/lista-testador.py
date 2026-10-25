@@ -1,3 +1,5 @@
+from time import sleep
+
 from listaDinEncOrd import ListaDinEncOrd
 from listaEstEncOrd import *
 
@@ -21,7 +23,7 @@ def main():
     while True:
         opcao = int(
             input(
-                "1 - Adicionar\n2 - Remover\n3 - Consultar\n4 - Atualizar\n5 - Mostrar\n6 - Esvazia\n7 - Sair\nEscolha: "
+                "1 - Adicionar\n2 - Remover\n3 - Consultar\n4 - Atualizar\n5 - Mostrar\n6 - Esvazia\n7 - Reorganiza por CPF\n8 - Sair\nEscolha: "
             )
         )
         print()
@@ -66,9 +68,13 @@ def main():
                 print("Lista esvaziada!")
             elif opcao == 2:
                 print("Ação cancelada!")
-    
         elif opcao == 7:
+            lista.reordenaCpf()
+            lista.mostrar()
+        elif opcao == 8:
             print("Encerrando programa...")
+            sleep(2)
+            print("🖕")
             break
         else:
             print("Opção inválida")

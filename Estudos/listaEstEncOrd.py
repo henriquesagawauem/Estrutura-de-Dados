@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 from copy import deepcopy
+from dataclasses import dataclass
+
 
 @dataclass
 class TipoItem:
@@ -142,11 +143,37 @@ class ListaEstaticaEncadeada:
 
         aux = self._inicio
         for i in range(self._numItens - 1):
-            print(self._lista[aux].item.nome, end=", ")
+            print(f"Nome: {self._lista[aux].item.nome}, CPF: {self._lista[aux].item.cpf}", end=" | ")
             aux = self._lista[aux]._prox
 
-        print(self._lista[aux].item.nome, end="\n")
+        print(f"Nome: {self._lista[aux].item.nome}, CPF: {self._lista[aux].item.cpf}", end="\n")
         return
+
+    def reordenaCpf(self) -> None:
+        if self.vazia():
+            return
+
+        inicioOrdenado = _TERRA
+        atual = self._inicio
+
+        for i in range(self._numItens):
+            proximo = self._lista[atual]._prox
+
+            if inicioOrdenado == _TERRA or self._lista[atual].item.cpf <= self._lista[inicioOrdenado].item.cpf:
+                self._lista[atual]._prox = inicioOrdenado
+                inicioOrdenado = atual
+            else:
+                anterior = inicioOrdenado
+
+                while self._lista[anterior]._prox != _TERRA and self._lista[self._lista[anterior]._prox].item.cpf <= self._lista[atual].item.cpf:
+                    anterior = self._lista[anterior]._prox
+
+                self._lista[atual]._prox = self._lista[anterior]._prox
+                self._lista[anterior]._prox = atual
+
+            atual = proximo
+
+        self._inicio = inicioOrdenado
 
     def esvazia(self) -> None:
         self._inicio: int = _TERRA
