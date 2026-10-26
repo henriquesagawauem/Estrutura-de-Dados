@@ -5,7 +5,6 @@ from dataclasses import dataclass
 @dataclass
 class TipoItem:
     nome: str = ""
-    idade: int = 0
     cpf: str = ""
 
 @dataclass
@@ -22,9 +21,9 @@ class ListaDinEncOrd:
         return self._numItens == 0
 
     def inserir(self, item: TipoItem) -> bool:
-        novoNo = TipoNo(item=item)
+        novoNo: TipoNo = TipoNo(item=item)
 
-        if self.vazia() or item.nome < self._inicio.item.nome:
+        if self.vazia() or novoNo.item.nome < self._inicio.item.nome:
             novoNo._prox = self._inicio
             self._inicio = novoNo
         else:
@@ -34,6 +33,9 @@ class ListaDinEncOrd:
             while atual != None and atual.item.nome <= item.nome:
                 anterior = atual
                 atual = atual._prox
+
+            if atual != None and atual.item.nome == item.nome:
+                return False
 
             anterior._prox = novoNo
             novoNo._prox = atual
@@ -61,7 +63,6 @@ class ListaDinEncOrd:
             anterior._prox = atual._prox
 
         self._numItens -= 1
-
         return True
 
     def consultar(self, nome: str) -> TipoItem | None:
@@ -69,47 +70,50 @@ class ListaDinEncOrd:
             return None
 
         atual = self._inicio
-        for i in range(self._numItens):
-            if atual.item.nome == nome:
-                return deepcopy(atual.item)
+
+        while atual != None and atual.item.nome != nome:
             atual = atual._prox
 
-        return None
+        if atual == None or atual.item.nome != nome:
+            return None
+
+        return deepcopy(atual.item)
 
     def atualizar(self, item: TipoItem) -> bool:
         if self.vazia():
             return False
 
         atual = self._inicio
-
-        for i in range(self._numItens):
-            if atual.item.nome == item.nome:
-                self.remover(item.nome)
-                self.inserir(item)
-                return True
+    
+        while atual != None and atual.item.nome != item.nome:
             atual = atual._prox
-        return False
+    
+        if atual == None or atual.item.nome != item.nome:
+            return False
+
+        self.remover(item.nome)
+        self.inserir(item)
+        return True
 
     def mostrar(self) -> None:
         if self.vazia():
             print("Lista vázia!")
             return
-        else:
-            aux = self._inicio
 
-            for i in range(self._numItens - 1):
-                print(f"Nome: {aux.item.nome}, CPF: {aux.item.cpf}", end=" | ")
-                aux = aux._prox
+        aux = self._inicio
 
-            print(f"Nome: {aux.item.nome}, CPF: {aux.item.cpf}", end="\n")
+        for i in range(self._numItens):
+            print(aux.item.nome, end=" ")
+            aux = aux._prox
 
         return
 
-    def reordenaCpf(self) -> None:
-        if self.vazia():
-            return
+    def esvazia(self) -> None:
+        self._inicio = None
+        self._numItens = 0
 
-        inicioOrdenado: TipoNo | None = None
+    def reordenaCpf(self) -> bool:
+        inicioOrdenado = None
         atual = self._inicio
 
         for i in range(self._numItens):
@@ -126,21 +130,20 @@ class ListaDinEncOrd:
 
                 atual._prox = anterior._prox
                 anterior._prox = atual
+            atual = proximo
+        self._inicio = inicioOrdenado
 
+    def inverter(self) -> None:
+        if self.vazia():
+            return
+
+        anterior = None
+        atual = self._inicio
+
+        while atual != None:
+            proximo = atual._prox
+            atual._prox = anterior
+            anterior = atual
             atual = proximo
 
-        self._inicio = inicioOrdenado
-        return
-
-    def esvazia(self) -> None:
-        self._inicio = None
-        self._numItens = 0
-
-lista = ListaDinEncOrd()
-
-lista.inserir(TipoItem("Palmeiras"))
-lista.inserir(TipoItem("Flamengo"))
-lista.inserir(TipoItem("Santos"))
-lista.inserir(TipoItem("Atlhetico-PR"))
-
-lista.mostrar()
+        self._inicio = anterior

@@ -23,7 +23,7 @@ def main():
     while True:
         opcao = int(
             input(
-                "1 - Adicionar\n2 - Remover\n3 - Consultar\n4 - Atualizar\n5 - Mostrar\n6 - Esvazia\n7 - Reorganiza por CPF\n8 - Sair\nEscolha: "
+                "1 - Adicionar\n2 - Remover\n3 - Consultar\n4 - Atualizar\n5 - Mostrar\n6 - Esvazia\n7 - Reorganiza por CPF\n8 - Inverter\n9 - Sair\nEscolha: "
             )
         )
         print()
@@ -60,6 +60,7 @@ def main():
                 print("Lista vázia ou nome não encontrado")
         elif opcao == 5:
             lista.mostrar()
+            print()
         elif opcao == 6:
             opcao = int(input("Tem certeza que deseja limpar tudo?\n1 - Sim\n2 - Não\nEscolha: "))
 
@@ -72,6 +73,9 @@ def main():
             lista.reordenaCpf()
             lista.mostrar()
         elif opcao == 8:
+            lista.inverter()
+            lista.mostrar()
+        elif opcao == 9:
             print("Encerrando programa...")
             sleep(2)
             print("🖕")

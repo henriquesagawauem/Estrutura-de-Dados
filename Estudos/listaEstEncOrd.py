@@ -175,6 +175,21 @@ class ListaEstaticaEncadeada:
 
         self._inicio = inicioOrdenado
 
+    def inverter(self) -> None:
+        if self.vazia():
+            return
+
+        anterior = _TERRA
+        atual = self._inicio
+
+        while atual != _TERRA:
+            proximo = self._lista[atual]._prox
+            self._lista[atual]._prox = anterior
+            anterior = atual
+            atual = proximo
+
+        self._inicio = anterior 
+
     def esvazia(self) -> None:
         self._inicio: int = _TERRA
         self._lista: list[TipoNo] = [TipoNo() for i in range(self._tamMax)]
