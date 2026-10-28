@@ -17,6 +17,17 @@ class No:
     item: TipoItem
     prox: "No | None" = None
 
+ACOUGUE = 1
+PADARIA = 2
+FRIOSELATICINIOS = 3
+HIGIENECORPORAL = 4
+LIMPEZA = 5
+HORTIFRUTI = 6
+GRAOSFARINACEOSECAFE = 7
+BEBIDAS = 8
+UTENSILIOS = 9
+DIVERSOS = 10
+
 class ListaDinamicaEncadeada:
     def __init__(self):
         self._inicio: No = None
@@ -81,6 +92,33 @@ class ListaDinamicaEncadeada:
             return atual.item
 
         return None
+
+    def relatorioEstoqueTotal(self) -> None:
+        if self.vazia():
+            print("Fila vázia")
+            return
+
+        atual = self._inicio
+
+        print("Relatório de produtos em estoque: ")
+        for i in range(self._nItens - 1):
+            if atual.item.quantidade_estoque > 0:
+                print(atual.item.nome, end=", ")
+            atual = atual.prox
+
+        if atual.item.quantidade_estoque > 0:
+            print(atual.item.nome, end="\n")
+
+        return
+
+    def relatorioEstoqueTipo(self, tipo: int):
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        return
+
+
 
     def mostra(self) -> None:
         atual = self._inicio
