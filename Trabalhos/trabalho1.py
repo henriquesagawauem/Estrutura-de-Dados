@@ -1,7 +1,8 @@
 # Henrique Tutomu Sagawa - RA152725
 
-from dataclasses import dataclass
 from copy import deepcopy
+from dataclasses import dataclass
+
 
 @dataclass
 class TipoItem:
@@ -12,10 +13,12 @@ class TipoItem:
     valor_custo: float = 0.0
     valor_venda: float = 0.0
 
+
 @dataclass
 class No:
     item: TipoItem
     prox: "No | None" = None
+
 
 ACOUGUE = 1
 PADARIA = 2
@@ -27,6 +30,7 @@ GRAOSFARINACEOSECAFE = 7
 BEBIDAS = 8
 UTENSILIOS = 9
 DIVERSOS = 10
+
 
 class ListaDinamicaEncadeada:
     def __init__(self):
@@ -48,7 +52,7 @@ class ListaDinamicaEncadeada:
 
         else:
             atual = self._inicio
-            while (atual.prox is not None and atual.prox.item.nome <= item.nome):
+            while atual.prox is not None and atual.prox.item.nome <= item.nome:
                 atual = atual.prox
 
             novo.prox = atual.prox
@@ -95,20 +99,22 @@ class ListaDinamicaEncadeada:
 
     def relatorioEstoqueTotal(self) -> None:
         if self.vazia():
-            print("Fila vázia")
+            print("Sem produtos!")
             return
 
         atual = self._inicio
+        primeiro = True
 
         print("Relatório de produtos em estoque: ")
-        for i in range(self._nItens - 1):
+        while atual != None:
             if atual.item.quantidade_estoque > 0:
-                print(atual.item.nome, end=", ")
+                if not primeiro:
+                    print(", ", end="")
+                print(atual.item.nome, end="")
+                primeiro = False
             atual = atual.prox
 
-        if atual.item.quantidade_estoque > 0:
-            print(atual.item.nome, end="\n")
-
+        print()
         return
 
     def relatorioEstoqueTipo(self, tipo: int):
@@ -116,9 +122,123 @@ class ListaDinamicaEncadeada:
             print("Sem produtos!")
             return
 
+        atual = self._inicio
+
+        print(f"Relatório de produtos em estoque do tipo {tipo}: ")
+        primeiro = True
+        while atual != None:
+            if atual.item.tipo == tipo and atual.item.quantidade_estoque > 0:
+                if not primeiro:
+                    print(", ", end="")
+                print(atual.item.nome, end="")
+                primeiro = False
+            atual = atual.prox
+
+        print()
+
         return
 
+    def relatorioProdutosEsgotados(self) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
 
+        atual = self._inicio
+        primeiro = True
+
+        print("Relatório de produtos esgotados: ")
+        while atual != None:
+            if atual.item.quantidade_estoque == 0:
+                if not primeiro:
+                    print(", ", end="")
+                print(atual.item.nome, end="")
+                primeiro = False
+            atual = atual.prox
+
+        print()
+
+        return
+
+    def relatorioProdutosEstoqueBaixo(self, limite: int) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+
+        print(f"Relatório de produtos com estoque abaixo de {limite}: ")
+        primeiro = True
+        while atual != None:
+            if atual.item.quantidade_estoque < limite:
+                if not primeiro:
+                    print(", ", end="")
+                print(atual.item.nome, end="")
+                primeiro = False
+            atual = atual.prox
+
+        print()
+
+        return
+
+    def relatorioQuantidadeVendida(self) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+
+        print("Relatório de quantidade vendida: ")
+        primeiro = True
+        while atual != None:
+            if atual.item.quantidade_vendida > 0:
+                if not primeiro:
+                    print(", ", end="")
+                print(f"{atual.item.nome} ({atual.item.quantidade_vendida})", end="")
+                primeiro = False
+            atual = atual.prox
+
+        print()
+
+        return
+
+    def relatorioTotalBruto(self) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+        total_bruto = 0.0
+
+        while atual != None:
+            total_bruto += atual.item.quantidade_vendida * atual.item.valor_venda
+            atual = atual.prox
+
+        print(f"Relatório de total bruto: R$ {total_bruto:.2f}")
+
+    def relatorioTotalLiquido(self) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+        total_liquido = 0.0
+
+        while atual != None:
+            total_liquido += atual.item.quantidade_vendida * (atual.item.valor_venda - atual.item.valor_custo)
+            atual = atual.prox
+
+        print(f"Relatório de total líquido: R$ {total_liquido:.2f}")
+
+    def reajustePercentual(self, percentual: float) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+
+        while atual != None:
+            atual.item.valor_venda *= (1 + percentual / 100)
+            atual = atual.prox
 
     def mostra(self) -> None:
         atual = self._inicio
@@ -144,6 +264,13 @@ class ListaDinamicaEncadeada:
 
         return True
 
-    def reinicia(self) -> None:
-        self._inicio = None
-        self._nItens = 0
+    def reiniciaVendas(self) -> None:
+        if self.vazia():
+            print("Sem produtos!")
+            return
+
+        atual = self._inicio
+
+        while atual != None:
+            atual.item.quantidade_vendida = 0
+            atual = atual.prox
