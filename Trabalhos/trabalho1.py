@@ -123,6 +123,9 @@ class ListaDinamicaEncadeada:
         if self.vazia():
             return False
 
+        if quantidade <= 0:
+            return False
+
         anterior = self._buscaAnterior(nome)
 
         if anterior == None:
@@ -218,6 +221,10 @@ class ListaDinamicaEncadeada:
     def relatorioProdutosEstoqueBaixo(self, limite: int) -> None:
         if self.vazia():
             print("Sem produtos!")
+            return
+
+        if limite < 0:
+            print("Limite inválido.")
             return
 
         atual = self._inicio
@@ -328,7 +335,6 @@ class ListaDinamicaEncadeada:
 
         item.item.tipo = itemAtualizado.tipo
         item.item.quantidade_estoque = itemAtualizado.quantidade_estoque
-        item.item.quantidade_vendida = itemAtualizado.quantidade_vendida
         item.item.valor_custo = itemAtualizado.valor_custo
         item.item.valor_venda = itemAtualizado.valor_venda
 
@@ -456,7 +462,6 @@ def atualizarProduto(lista: ListaDinamicaEncadeada) -> None:
         print(f"Nome: {item.nome}")
         print(f"Tipo: {mostrarTipo(item.tipo)}")
         print(f"Quantidade em estoque: {item.quantidade_estoque}")
-        print(f"Quantidade vendida: {item.quantidade_vendida}")
         print(f"Valor de custo: {item.valor_custo}")
         print(f"Valor de venda: {item.valor_venda:.2f}")
 
