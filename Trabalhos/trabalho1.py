@@ -6,6 +6,9 @@ from dataclasses import dataclass
 
 @dataclass
 class TipoItem:
+    """
+    tipo para os itens do mercado
+    """
     nome: str = ""
     tipo: int = 0
     quantidade_estoque: int = 0
@@ -18,10 +21,14 @@ class TipoItem:
 
 @dataclass
 class No:
+    """
+    Nó dá lista que tem o item e o ponteiro para o próximo item
+    """
     item: TipoItem
     prox: "No | None" = None
 
 
+# Catalogo do mercado marcado por constantes
 ACOUGUE = 1
 PADARIA = 2
 FRIOSELATICINIOS = 3
@@ -36,19 +43,34 @@ DIVERSOS = 10
 
 class ListaDinamicaEncadeada:
     def __init__(self):
+        """
+        Inicializa a estrutura, começando com a lista vázia
+        """
         self._inicio: No | None = None
         self._nItens: int = 0
 
     def vazia(self):
+        """
+        Retorna se a lista está vázia
+        """
         return self._inicio == None
 
     def cheia(self):
+        """
+        Retorna se a lista está cheia
+        """
         return False
 
     def tamanho(self):
+        """
+        Retorna o tamanho da lista
+        """
         return self._nItens
 
     def _buscaAnterior(self, nome: str) -> No | None:
+        """
+        Busca o item anterior ao *nome* enviado no parâmetro.
+        """
         anterior = None
         atual = self._inicio
 
@@ -59,6 +81,9 @@ class ListaDinamicaEncadeada:
         return anterior
 
     def insere(self, item: TipoItem) -> bool:
+        """
+        Insere um item na lista de forma ordenada por nome
+        """
         anterior = self._buscaAnterior(item.nome)
 
         if anterior == None:
@@ -82,6 +107,9 @@ class ListaDinamicaEncadeada:
         return True
 
     def remove(self, nome: str) -> bool:
+        """
+        Remove o item associado a *nome* na lista
+        """
         if self.vazia():
             return False
 
@@ -104,6 +132,9 @@ class ListaDinamicaEncadeada:
         return True
 
     def buscar(self, nome: str) -> TipoItem | None:
+        """
+        Busca um item na lista e retorna o item ou None caso não encontrado
+        """
         if self.vazia():
             return None
 
@@ -120,6 +151,9 @@ class ListaDinamicaEncadeada:
         return deepcopy(atual.item)
 
     def registraVenda(self, nome: str, quantidade: int) -> bool:
+        """
+        Registra um venda de um produto com uma quantidade informada
+        """
         if self.vazia():
             return False
 
@@ -148,6 +182,9 @@ class ListaDinamicaEncadeada:
         return True
 
     def relatorioEstoqueTotal(self) -> None:
+        """
+        Imprime todos os itens da lista que estão em estoque
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -171,6 +208,9 @@ class ListaDinamicaEncadeada:
         return
 
     def relatorioEstoqueTipo(self, tipo: int):
+        """
+        Imprime todos os itens de *tipo* que estão em estoque
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -195,6 +235,9 @@ class ListaDinamicaEncadeada:
         return
 
     def relatorioProdutosEsgotados(self) -> None:
+        """
+        Imprime todos os itens com estoque igual a 0
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -219,6 +262,9 @@ class ListaDinamicaEncadeada:
         return
 
     def relatorioProdutosEstoqueBaixo(self, limite: int) -> None:
+        """
+        Imprime os itens que estão com estoque abaixo de *limite*
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -247,6 +293,9 @@ class ListaDinamicaEncadeada:
         return
 
     def relatorioQuantidadeVendida(self) -> None:
+        """
+        Imprime os itens que foram vendidos e a quantidade vendida
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -271,6 +320,9 @@ class ListaDinamicaEncadeada:
         return
 
     def relatorioTotalBruto(self) -> None:
+        """
+        Imprime o total bruto de vendas
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -285,6 +337,9 @@ class ListaDinamicaEncadeada:
         print(f"Relatório de total bruto: R$ {total_bruto:.2f}")
 
     def relatorioTotalLiquido(self) -> None:
+        """
+        Imprime o total líquido de vendas
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -299,6 +354,9 @@ class ListaDinamicaEncadeada:
         print(f"Relatório de total líquido: R$ {total_liquido:.2f}")
 
     def reajustePercentual(self, percentual: float) -> None:
+        """
+        Reajusta o preço de todos os itens
+        """
         if self.vazia():
             print("Sem produtos!")
             return
@@ -320,6 +378,9 @@ class ListaDinamicaEncadeada:
             contador += 1
 
     def atualiza(self, itemAtualizado: TipoItem) -> bool:
+        """
+        Atualiza os dados de algum item na lista
+        """
         if self.vazia():
             return False
 
@@ -341,6 +402,9 @@ class ListaDinamicaEncadeada:
         return True
 
     def reiniciaVendas(self) -> None:
+        """
+        Reinicia todos os dados de vendas
+        """
 
         atual = self._inicio
 
@@ -351,6 +415,7 @@ class ListaDinamicaEncadeada:
             atual = atual.prox
 
 def mostrarTipo(tipo: int) -> str:
+    """ Recebe o tipo do produto por meio de um inteiro e retorna a string associada a ele """
     if tipo == ACOUGUE:
         return "Açougue"
     elif tipo == PADARIA:
@@ -375,6 +440,7 @@ def mostrarTipo(tipo: int) -> str:
         return "Tipo inválido"
 
 def mostrarTipos() -> None:
+    """ Mostra todos os tipos """
     print("Tipos de produtos:")
     print(f"{ACOUGUE} - Açougue")
     print(f"{PADARIA} - Padaria")
@@ -388,6 +454,7 @@ def mostrarTipos() -> None:
     print(f"{DIVERSOS} - Diversos")
 
 def cadastrarProduto(lista: ListaDinamicaEncadeada) -> None:
+    """ Cadastra um produto na lista """
     print("\n=== CADASTRAR PRODUTO ===")
     nome = input("Digite o nome do produto: ")
     if not nome:
@@ -427,6 +494,7 @@ def cadastrarProduto(lista: ListaDinamicaEncadeada) -> None:
 
 
 def removerProduto(lista: ListaDinamicaEncadeada) -> None:
+    """ Remove um produto da lista """
     print("\n=== REMOVER PRODUTO ===")
     nome = input("Digite o nome do produto a ser removido: ")
 
@@ -436,6 +504,7 @@ def removerProduto(lista: ListaDinamicaEncadeada) -> None:
         print(f"Produto '{nome}' não encontrado na lista.")
 
 def consultarProduto(lista: ListaDinamicaEncadeada) -> None:
+    """ Consulta um produto na lista """
     print("\n=== CONSULTAR PRODUTO ===")
     nome = input("Digite o nome do produto a ser consultado: ")
 
@@ -453,6 +522,7 @@ def consultarProduto(lista: ListaDinamicaEncadeada) -> None:
         print(f"Produto '{nome}' não encontrado na lista.")
 
 def atualizarProduto(lista: ListaDinamicaEncadeada) -> None:
+    """ Atualiza um produto na lista """
     print("\n=== ATUALIZAR PRODUTO ===")
     nome = input("Digite o nome do produto a ser atualizado: ")
 
@@ -500,10 +570,12 @@ def atualizarProduto(lista: ListaDinamicaEncadeada) -> None:
         print(f"Produto '{nome}' não encontrado na lista.")
 
 def listarProdutos(lista: ListaDinamicaEncadeada) -> None:
+    """ Imprime os produtos da lista """
     print("\n=== LISTAR PRODUTOS ===")
     lista.mostra()
 
 def registraVenda(lista: ListaDinamicaEncadeada) -> None:
+    """ Registra vendas de produtos """
     print("\n=== REGISTRAR VENDA DE PRODUTO ===")
     nome = input("Digite o nome do produto a ser vendido: ")
 
@@ -530,6 +602,7 @@ def registraVenda(lista: ListaDinamicaEncadeada) -> None:
         print(f"Produto '{nome}' não encontrado na lista.")
 
 def main():
+    """ Função principal para manipular a lista de controle do mercado """
     lista = ListaDinamicaEncadeada()
 
     while True:
