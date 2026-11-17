@@ -23,6 +23,7 @@ ITEMEXISTENTE = 3
 ITEMINEXISTENTE = 4
 ITEMINSERIDO = 5
 ITEMREMOVIDO = 6
+ITEMATUALIZADO = 7
 
 
 class ArvoreBinariaDeBuscaIterativa:
@@ -119,11 +120,11 @@ class ArvoreBinariaDeBuscaIterativa:
         anterior = None
         atual = self._raiz
 
-        while atual != None:
+        while atual != None and atual.item.nome != nome:
             if nome > atual.item.nome:
                 anterior = atual
                 atual = atual._dir
-            elif nome < atual.item.nome:
+            else:
                 anterior = atual
                 atual = atual._esq
 
@@ -140,7 +141,7 @@ class ArvoreBinariaDeBuscaIterativa:
             elif atual._dir == None:
                 self._raiz = atual._esq
             else:
-                self._raiz = self._maiorDosMenores(atual)
+                atual.item = self._maiorDosMenores(atual)
         else:
             if nome > anterior.item.nome:
                 if atual._esq == None:
@@ -148,14 +149,14 @@ class ArvoreBinariaDeBuscaIterativa:
                 elif atual._dir == None:
                     anterior._dir = atual._esq
                 else:
-                    anterior._dir = self._maiorDosMenores(atual)
+                    atual.item = self._maiorDosMenores(atual)
             else:
                 if atual._esq == None:
                     anterior._esq = atual._dir
                 elif atual._dir == None:
                     anterior._esq = atual._esq
                 else:
-                    anterior._esq = self._maiorDosMenores(atual)
+                    atual.item = self._maiorDosMenores(atual)
 
         self._opStatus = ITEMREMOVIDO
         self._numItens -= 1
@@ -265,8 +266,7 @@ class ArvoreBinariaDeBuscaIterativa:
     def consulta(self, nome: str) -> TipoItem | None:
         if self.vazia():
             self._opStatus = ARVOREVAZIA
-            print("Árvore vázia")
-            return
+            return None
 
         anterior = None
         atual = self._raiz
@@ -281,7 +281,7 @@ class ArvoreBinariaDeBuscaIterativa:
 
         if atual == None or atual.item.nome != nome:
             self._opStatus = ITEMINEXISTENTE
-            return False
+            return None
 
         return deepcopy(atual.item)
 
@@ -309,6 +309,8 @@ class ArvoreBinariaDeBuscaIterativa:
 
         atual.item.idade = deepcopy(item.idade)
         atual.item.cpf = deepcopy(item.cpf)
+
+        self._opStatus = ITEMATUALIZADO
 
         return True
 
@@ -350,3 +352,19 @@ print()
 print(arvore.consulta("Henrique"))
 print(arvore.consulta("Marcos"))
 print(arvore.consulta("Gustavo"))
+
+print()
+
+arvore.remover("Henrique")
+arvore.remover("Marcos")
+arvore.remover("Gustavo")
+arvore.remover("Antonio")
+
+arvore.mostraEmOrdem()
+print()
+arvore.mostraPreOrdem()
+print()
+arvore.mostraPosOrdem()
+print()
+arvore.mostraEmLargura()
+print()
